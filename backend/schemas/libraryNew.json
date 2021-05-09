@@ -1,0 +1,85 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "title": "Opus 10",
+            "composer": "Joe Moe",
+            "birth": "1910-01-01",
+            "genre": "Opera",
+            "epoch": "20th Century",
+            "popular": true
+        }
+    ],
+    "required": [
+        "title",
+        "composer"
+    ],
+    "properties": {
+        "title": {
+            "$id": "#/properties/title",
+            "type": "string",
+            "title": "The title schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Opus 10"
+            ]
+        },
+        "composer": {
+            "$id": "#/properties/composer",
+            "type": "string",
+            "title": "The composer schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Joe Moe"
+            ]
+        },
+        "birth": {
+            "$id": "#/properties/birth",
+            "type": "string",
+            "title": "The birth schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "1910-01-01"
+            ]
+        },
+        "genre": {
+            "$id": "#/properties/genre",
+            "type": "string",
+            "title": "The genre schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Opera"
+            ]
+        },
+        "epoch": {
+            "$id": "#/properties/epoch",
+            "type": "string",
+            "title": "The epoch schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "20th Century"
+            ]
+        },
+        "popular": {
+            "$id": "#/properties/popular",
+            "type": "boolean",
+            "title": "The popular schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        }
+    },
+    "additionalProperties": false
+}

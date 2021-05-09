@@ -1,0 +1,117 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "user_id": "1",
+            "library_id": "1",
+            "api_id": "1",
+            "owned": true,
+            "digital": true,
+            "physical": true,
+            "played": true,
+            "loanedout": true,
+            "notes": "foo"
+        }
+    ],
+    "required": [
+        "user_id"
+    ],
+    "properties": {
+        "user_id": {
+            "$id": "#/properties/user_id",
+            "type": "number",
+            "title": "The user_id schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "1"
+            ]
+        },
+        "library_id": {
+            "$id": "#/properties/library_id",
+            "anyOf": [{"type": "number"}, {"type": "null"}],
+            "title": "The library_id schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": null,
+            "examples": [
+                "1"
+            ]
+        },
+        "api_id": {
+            "$id": "#/properties/api_id",
+            "anyOf": [{"type": "number"}, {"type": "null"}],
+            "title": "The api_id schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": null,
+            "examples": [
+                "1"
+            ]
+        },
+        "owned": {
+            "$id": "#/properties/owned",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
+            "title": "The owned schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "digital": {
+            "$id": "#/properties/digital",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
+            "title": "The digital schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "physical": {
+            "$id": "#/properties/physical",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
+            "title": "The physical schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "played": {
+            "$id": "#/properties/played",
+            "type": "boolean",
+            "title": "The played schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "loanedout": {
+            "$id": "#/properties/loanedout",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
+            "title": "The loanedout schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "notes": {
+            "$id": "#/properties/notes",
+            "anyOf": [{"type": "string"}, {"type": "null"}],
+            "title": "The notes schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "foo"
+            ]
+        }
+    },
+    "additionalProperties": false
+}

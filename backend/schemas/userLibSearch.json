@@ -1,0 +1,94 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "owned": true,
+            "digital": true,
+            "physical": true,
+            "played": true,
+            "loanedout": true,
+            "title": "Opus 10",
+            "composer": "Joe Blow"
+        }
+    ],
+    "required": [
+    ],
+    "properties": {
+        "owned": {
+            "$id": "#/properties/owned",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}, {"type": "string"}],
+            "title": "The owned schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "digital": {
+            "$id": "#/properties/digital",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}, {"type": "string"}],
+            "title": "The digital schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "physical": {
+            "$id": "#/properties/physical",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}, {"type": "string"}],
+            "title": "The physical schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "played": {
+            "$id": "#/properties/played",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}, {"type": "string"}],
+            "title": "The played schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "loanedout": {
+            "$id": "#/properties/loanedout",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}, {"type": "string"}],
+            "title": "The loanedout schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "title": {
+            "$id": "#/properties/title",
+            "type": "string",
+            "title": "The title schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Opus 10"
+            ]
+        },
+        "composer": {
+            "$id": "#/properties/composer",
+            "type": "string",
+            "title": "The composer schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Joe Blow"
+            ]
+        }
+    },
+    "additionalProperties": false
+}
