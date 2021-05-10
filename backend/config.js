@@ -22,7 +22,7 @@ const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
 console.log("My Sheet Music Config:".green);
 console.log("SECRET_KEY:".yellow, SECRET_KEY);
 console.log("PORT:".yellow, PORT.toString());
-console.log("Crypto work factor".yellow, BCRYPT_WORK_FACTOR);
+console.log("Bcrypt work factor".yellow, BCRYPT_WORK_FACTOR);
 console.log("Database:".yellow, getDatabaseUri());
 console.log("---");
 
