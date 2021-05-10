@@ -74,11 +74,13 @@ router.get("/", ensureAdmin, async function (req, res, next) {
 router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
     const user = await User.get(req.params.username);
-    for (work of user.works) {
-      if (api_id !== null) {
-        const outsideWork = await axios.get(`${url}/work/detail/${api_id}.json`);
-        work.title = outsideWork.work.title;
-        work.composer = outsideWork.composer.complete_name;
+    if (user.works && user.works.length > 1) {
+      for (let work of user.works) {
+        if (work.api_id !== undefined && work.api_id !== null) {
+          const outsideWork = await axios.get(`${url}/work/detail/${api_id}.json`);
+          work.title = outsideWork.work.title;
+          work.composer = outsideWork.composer.complete_name;
+        }
       }
     }
     return res.json({ user });
@@ -136,10 +138,10 @@ router.delete("/:username", ensureCorrectUserOrAdmin, async function (req, res, 
  * Authorization required: correct user or admin
  * */
 
-router.post("/:username/userLib/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.post("/:user/userLib/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
     const workId = +req.params.id;
-    await User.addToUserLib(req.params.username, workId);
+    await User.addToUserLib(+req.params.user, workId);
     return res.json({ added: workId });
   } catch (err) {
     return next(err);

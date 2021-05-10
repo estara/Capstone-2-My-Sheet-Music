@@ -42,7 +42,7 @@
         },
         "birth": {
             "$id": "#/properties/birth",
-            "type": "string",
+            "anyOf": [{"type": "null"}, {"type": "string"}],
             "title": "The birth schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -52,7 +52,7 @@
         },
         "genre": {
             "$id": "#/properties/genre",
-            "type": "string",
+            "anyOf": [{"type": "null"}, {"type": "string"}],
             "title": "The genre schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -62,7 +62,7 @@
         },
         "epoch": {
             "$id": "#/properties/epoch",
-            "type": "string",
+            "anyOf": [{"type": "null"}, {"type": "string"}],
             "title": "The epoch schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -72,7 +72,7 @@
         },
         "popular": {
             "$id": "#/properties/popular",
-            "type": "boolean",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}, {"type": "string"}],
             "title": "The popular schema",
             "description": "An explanation about the purpose of this instance.",
             "default": false,

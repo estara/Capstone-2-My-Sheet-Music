@@ -20,7 +20,7 @@
     "properties": {
         "owned": {
             "$id": "#/properties/owned",
-            "type": "boolean",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
             "title": "The owned schema",
             "description": "An explanation about the purpose of this instance.",
             "default": false,
@@ -30,7 +30,7 @@
         },
         "digital": {
             "$id": "#/properties/digital",
-            "type": "boolean",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
             "title": "The digital schema",
             "description": "An explanation about the purpose of this instance.",
             "default": false,
@@ -40,7 +40,7 @@
         },
         "physical": {
             "$id": "#/properties/physical",
-            "type": "boolean",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
             "title": "The physical schema",
             "description": "An explanation about the purpose of this instance.",
             "default": false,
@@ -50,7 +50,7 @@
         },
         "played": {
             "$id": "#/properties/played",
-            "type": "boolean",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
             "title": "The played schema",
             "description": "An explanation about the purpose of this instance.",
             "default": false,
@@ -60,7 +60,7 @@
         },
         "loanedout": {
             "$id": "#/properties/loanedout",
-            "type": "boolean",
+            "anyOf": [{"type": "boolean"}, {"type": "null"}],
             "title": "The loanedout schema",
             "description": "An explanation about the purpose of this instance.",
             "default": false,
@@ -70,7 +70,7 @@
         },
         "notes": {
             "$id": "#/properties/notes",
-            "type": "string",
+            "anyOf": [{"type": "string"}, {"type": "null"}],
             "title": "The notes schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",

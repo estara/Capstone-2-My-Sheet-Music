@@ -112,6 +112,12 @@ router.get("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
 
 router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
+    for (let field in req.body) {
+      if (req.body[field] === "on") {
+        req.body[field] = true;
+      }
+    }
+
     const validator = jsonschema.validate(req.body, userLibUpdateSchema);
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);

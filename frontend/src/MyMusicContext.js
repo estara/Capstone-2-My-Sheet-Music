@@ -2,6 +2,9 @@ import React from 'react';
 
 const CurrentUserContext = React.createContext();
 const CurrentUserDispatchContext = React.createContext();
-const UsersContext = React.createContext();
+const LibraryContext = React.createContext();
+const LibraryDispatchContext = React.createContext();
+const UserLibContext = React.createContext();
+const UserLibDispatchContext = React.createContext();
 
-export { CurrentUserContext, CurrentUserDispatchContext, UsersContext };
+export { CurrentUserContext, CurrentUserDispatchContext, LibraryContext, LibraryDispatchContext, UserLibContext, UserLibDispatchContext };

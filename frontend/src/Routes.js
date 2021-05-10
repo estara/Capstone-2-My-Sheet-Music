@@ -2,11 +2,12 @@ import React from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Home from './Home';
-import Admin from './Library';
+import Library from './Library';
 import NavBar from './NavBar';
 import User from './User';
 import Login from './Login';
 import Signup from './Signup';
+import AddWork from './AddWork';
 
 function Routes ({ logout, login, signup }) {
 
@@ -19,15 +20,14 @@ function Routes ({ logout, login, signup }) {
                 <Route exact path="/">
                   <Home />
                 </Route>
-                
+                <PrivateRoute exact path="/newWork" component={AddWork}/>
                 <PrivateRoute exact path="/userLib/:id" component={User}/>
                 <Route exact path="/login">
                   <Login login={login}/>
                 </Route>
                 <Route exact path="/library">
-                  <Catalog/>
+                  <Library/>
                 </Route>
-                <PrivateRoute exact path="/admin" component={Admin}/>
                 <Route exact path="/signup">
                   <Signup signup={signup}/>
                 </Route>

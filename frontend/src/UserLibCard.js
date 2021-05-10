@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Card, CardText, CardBody,
-  CardTitle, Button
+  Card, CardBody, CardTitle, Button, Form, FormGroup, Input, Label
 } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
+import './UserLibCard.css';
 import MyMusicApi from './api.js';
 
 function UserLibCard ({ work }) {
   const initialState = {owned: work.owned, digital: work.digital, physical: work.physical, played: work.played, loanedout: work.loanedout, notes: work.notes}
-  const history = useHistory();
   const [formData, setFormData] = useState(initialState);
 
   // handle user form input before submit
@@ -20,12 +18,17 @@ function UserLibCard ({ work }) {
     }));
 }
 
-  // activate user
+  // update work
   async function handleSubmit (evt) {
     evt.preventDefault();
-    user.state = "active";
     await MyMusicApi.updateUserWork(work.id, formData);
     setFormData(initialState);
+  }
+
+  // delete work
+  async function handleDelete (evt) {
+    evt.preventDefault();
+    await MyMusicApi.deleteUserWork(work.id);
   }
 
   // display user detail card
@@ -36,25 +39,42 @@ function UserLibCard ({ work }) {
           <CardBody>
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
-                    <Input type="checkbox" name="owned" placeholder="I Own" onChange={handleChange} required></Input>
+                    <Label check>
+                    <Input type="checkbox" name="owned" onChange={handleChange} />{' '}
+                    I own
+                    </Label>
                 </FormGroup>
                 <FormGroup>
-                    <Input type="checkbox" name="digital" placeholder="I own digital copy" onChange={handleChange} required></Input>
+                    <Label check>
+                    <Input type="checkbox" name="digital" onChange={handleChange} />{' '}
+                      I own digital copy
+                    </Label>
                 </FormGroup>
                 <FormGroup>
-                    <Input type="checkbox" name="physical" placeholder="I own physical copy" onChange={handleChange} required></Input>
+                    <Label check>
+                    <Input type="checkbox" name="physical" onChange={handleChange} />{' '}
+                    I own physical copy
+                    </Label>
                 </FormGroup>
                 <FormGroup>
-                    <Input type="checkbox" name="played" placeholder="I've played this piece" onChange={handleChange} required></Input>
+                  <Label check>
+                    <Input type="checkbox" name="played" onChange={handleChange} />{' '}
+                    I've played this piece
+                    </Label>
                 </FormGroup>
                 <FormGroup>
-                    <Input type="checkbox" name="loanedout" placeholder="I have a copy loaned out to someone" onChange={handleChange} required></Input>
+                <Label check>
+                    <Input type="checkbox" name="loanedout" onChange={handleChange} />{' '}
+                    I have a copy loaned out to someone
+                    </Label>
                 </FormGroup>
                 <FormGroup>
-                    <Input type="text" name="notes" placeholder={work.notes} onChange={handleChange} required></Input>
+                    <Label for="notes">Notes:</Label>
+                    <Input type="text" name="notes" placeholder={work.notes} onChange={handleChange}></Input>
                 </FormGroup>
                 <Button>Submit changes</Button>
             </Form>
+            <Button onClick={handleDelete}>Delete</Button>
           </CardBody>
       </Card>
     </div>

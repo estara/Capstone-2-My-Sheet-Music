@@ -8,6 +8,7 @@ const User = require("../models/user");
 const express = require("express");
 const router = new express.Router();
 const { createToken } = require("../helpers/tokens");
+const userNewSchema = require("../schemas/userNew.json");
 const userAuthSchema = require("../schemas/userAuth.json");
 const { BadRequestError } = require("../expressError");
 

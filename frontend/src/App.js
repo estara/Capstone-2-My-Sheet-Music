@@ -1,33 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { CurrentUserContext, CurrentUserDispatchContext, HasAppliedToJobContext, HasAppliedToJobDispatchContext, CompaniesDispatchContext, CompaniesContext, JobsContext, JobsDispatchContext } from './JoblyContext';
+import { CurrentUserContext, CurrentUserDispatchContext, LibraryContext, LibraryDispatchContext,  UserLibContext, UserLibDispatchContext } from './MyMusicContext';
 import MyMusicApi from './api.js';
 import Routes from './Routes';
 
 function App() {
   // create states for needed information
-  const [currentUser, setCurrentUser] = useState('foob');
-  const [hasAppliedToJob, setHasAppliedToJob] = useState([]);
+  const [currentUser, setCurrentUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [companies, setCompanies] = useState(null);
-  const [jobs, setJobs] = useState(null);
+  const [library, setLibrary] = useState();
+  const [userLib, setUserLib] = useState([]);
   
   // get needed information on load if user is stored in localstorage
   useEffect(() => {
     async function onLoad() {
       try{
       const token = localStorage.getItem('token');
+      console.log(token)
       MyMusicApi.token = token;
       const username = localStorage.getItem('username');
-      const companyList = await MyMusicApi.getCompanies();
       const user = await MyMusicApi.getUser(username);
-      const jobList = await MyMusicApi.getJobs();
-      if (user.applications) {setHasAppliedToJob(user.applications);}
-      setCompanies(companyList);
-      setJobs(jobList);
-      setCurrentUser({token: token, username: username, firstName: user.firstName, lastName: user.lastName, email: user.email});
+      setCurrentUser({token: token, id: user.user.id, username: username, name: user.user.name, email: user.user.email});
+      const libraryList = await MyMusicApi.getLibrary();
+      setLibrary(libraryList.library);
+      
+      if (user.user.works) {
+        try{
+      const userLibList = await MyMusicApi.getUserLib(user.user.id);
+      setUserLib(userLibList.library);
+        }catch(err) {}
+      }
       setIsLoading(false);
       } catch (err) {
+        const libraryList = await MyMusicApi.getLibrary();
+        setLibrary(libraryList.library);
         setIsLoading(false);
         setCurrentUser(false);
       }
@@ -42,6 +48,7 @@ function App() {
     localStorage.setItem('token', res);
     localStorage.setItem('username', formData.username)
     setIsLoading(true);
+    return formData.username
   }
 
   // logout user
@@ -58,6 +65,7 @@ function App() {
     localStorage.setItem('token', res);
     localStorage.setItem('username', formData.username);
     setIsLoading(true);
+    return formData.username
   }
 
   
@@ -72,19 +80,15 @@ function App() {
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
       <CurrentUserDispatchContext.Provider value={setCurrentUser}>
-      <HasAppliedToJobContext.Provider value={hasAppliedToJob}>
-      <HasAppliedToJobDispatchContext.Provider value={setHasAppliedToJob}>
-      <CompaniesContext.Provider value={companies}>
-      <CompaniesDispatchContext.Provider value={setCompanies}>
-      <JobsContext.Provider value={jobs}>
-      <JobsDispatchContext.Provider value={setJobs}>
+      <LibraryContext.Provider value={library}>
+      <LibraryDispatchContext.Provider value={setLibrary}>
+      <UserLibContext.Provider value={userLib}>
+      <UserLibDispatchContext.Provider value={setUserLib}>
           <Routes logout={logout} login={login} signup={signup}/>
-      </JobsDispatchContext.Provider>
-      </JobsContext.Provider>
-      </CompaniesDispatchContext.Provider>
-      </CompaniesContext.Provider>
-      </HasAppliedToJobDispatchContext.Provider>
-      </HasAppliedToJobContext.Provider>
+      </UserLibDispatchContext.Provider>
+      </UserLibContext.Provider>
+      </LibraryDispatchContext.Provider>
+      </LibraryContext.Provider>
       </CurrentUserDispatchContext.Provider>
       </CurrentUserContext.Provider>
     </div>

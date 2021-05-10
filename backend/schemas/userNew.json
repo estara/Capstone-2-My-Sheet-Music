@@ -17,8 +17,7 @@
         "username",
         "password",
         "name",
-        "email",
-        "isAdmin"
+        "email"
     ],
     "properties": {
         "username": {
@@ -53,7 +52,8 @@
         },
         "email": {
             "$id": "#/properties/email",
-            "type": "email",
+            "type": "string",
+            "format": "email",
             "title": "The email schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",

@@ -19,14 +19,11 @@ function NavBar ({ logout }) {
         <NavbarBrand href="/">My Sheet Music</NavbarBrand>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/signup">Signup</NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink href="/library">Catalog</NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink href="/userLib">My Library</NavLink>
-            </NavItem>
+            {currentUser ? <NavItem>
+              <NavLink href={`/userLib/${currentUser.username}`}>My Library</NavLink>
+            </NavItem> : <div></div>}
           {(currentUser) ? <NavItem>
             <NavLink to="/" onClick={logout}>Logout</NavLink>
           </NavItem> : 

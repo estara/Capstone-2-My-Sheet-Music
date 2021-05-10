@@ -13,7 +13,8 @@ const {
   commonAfterEach,
   commonAfterAll,
   testWorksOwned,
-  testUser
+  testUser,
+  testLibrary
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -248,14 +249,34 @@ describe("remove", function () {
 
 describe("addToUserLib", function () {
   test("works", async function () {
-    await User.addToUserLib(testUser[0], testWorksOwned[1]);
+    await User.addToUserLib(testUser[0], testLibrary[1]);
 
     const res = await db.query(
-        `SELECT * FROM user_library WHERE library_id=$1`, [testWorksOwned[1]]);
-    expect(res.rows).toEqual([{
-      library_id: testWorksOwned[1],
-      username: "u1",
-    }]);
+        `SELECT * FROM user_library WHERE library_id=$1`, [testLibrary[1]]);
+    expect(res.rows).toEqual([ {
+           api_id: null,
+           digital: false,
+           id: expect.any(Number),
+           library_id: testLibrary[1],
+           loanedout: true,
+           notes: "note2",
+           owned: false,
+           physical: true,
+           played: false,
+           user_id: testUser[1],
+         },
+         {
+           api_id: null,
+           digital: null,
+           id: expect.any(Number),
+           library_id: testLibrary[1],
+           loanedout: null,
+           notes: null,
+           owned: null,
+           physical: null,
+           played: null,
+           user_id: testUser[0],
+          }]);
   });
 
   test("not found if no such work", async function () {

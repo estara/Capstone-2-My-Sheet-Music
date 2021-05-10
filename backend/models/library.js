@@ -170,6 +170,7 @@ class Library {
                                 epoch,
                                 popular`;
     const result = await db.query(querySql, [...values, id]);
+    console.log(result.rows[0])
     const work = result.rows[0];
 
     if (!work) throw new NotFoundError(`No local work: ${id}`);

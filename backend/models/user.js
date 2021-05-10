@@ -120,6 +120,7 @@ class User {
    **/
 
   static async get(username) {
+
     const userRes = await db.query(
           `SELECT id,
                   username,
@@ -215,9 +216,10 @@ class User {
    **/
 
   static async addToUserLib(id, workId) {
+
     const preCheck = await db.query(
           `SELECT id
-           FROM user_library
+           FROM library
            WHERE id = $1`, [workId]);
     const work = preCheck.rows[0];
 
@@ -227,6 +229,7 @@ class User {
           `SELECT id
            FROM users
            WHERE id = $1`, [id]);
+           
     const user = preCheck2.rows[0];
 
     if (!user) throw new NotFoundError(`No username: ${id}`);

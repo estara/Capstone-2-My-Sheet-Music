@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Form, FormGroup, Button, Input } from 'reactstrap';
 import { CurrentUserContext } from './MyMusicContext';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Login ({ login }) {
     const currentUser = useContext(CurrentUserContext);
     const initialState = {username: "", password: ""};
     const [formData, setFormData] = useState(initialState);
+    const history = useHistory();
     
 
     // handle user form input before submit
@@ -22,8 +23,9 @@ function Login ({ login }) {
     async function handleSubmit (evt) {
         evt.preventDefault();
         try{
-        await login(formData);
+        const res = await login(formData);
         setFormData(initialState);
+        history.push(`/userLib/${res.username}`)
         } catch (err) {
             return( <p>Bad login, please try again.</p>)
         };

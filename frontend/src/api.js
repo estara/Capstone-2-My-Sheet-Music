@@ -97,11 +97,12 @@ class MyMusicApi {
 
   // add work to user library
   static async addItem(username, id) {
-    await this.request(`users/${username}/userLib/${id}`);
+    const res = await this.request(`users/${username}/userLib/${id}`, {}, "POST");
+    console.log(res)
   }
   
   // get user's library
-  static async getUserLibrary(id) {
+  static async getUserLib(id) {
     const res = await this.request(`userLib/user/${id}`);
     return res;
   }
