@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "https://my-sheet-music.herokuapp.com/";
+const BASE_URL = "https://my-sheet-music-backend.herokuapp.com";
 
 /** API Class.
  *
