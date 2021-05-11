@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://my-sheet-music-backend.herokuapp.com/";
+const BASE_URL = "https://my-sheet-music-backend.herokuapp.com/";
 
 /** API Class.
  *
