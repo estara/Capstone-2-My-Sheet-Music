@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://my-sheet-music-backend.herokuapp.com";
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
 /** API Class.
  *
@@ -70,8 +70,8 @@ class MyMusicApi {
   // signup new user
   static async signup(formData) {
     const res = await this.request(`auth/register`, formData, "POST");
-    this.token = res.token;
-    return this.token;
+    this.token = res.result.token;
+    return res.result;
   }
 
   // get music catalog

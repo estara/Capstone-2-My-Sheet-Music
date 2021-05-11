@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import {
   Card, CardBody, CardTitle, Button, Form, FormGroup, Input, Label
 } from 'reactstrap';
-import './UserLibCard.css';
+import './Library.css';
 import MyMusicApi from './api.js';
 import { CurrentUserContext } from './MyMusicContext';
 
@@ -42,41 +42,41 @@ function UserLibCard ({ work }) {
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
                     <Label check>
-                    <Input type="checkbox" name="owned" onChange={handleChange} />{' '}
+                    <Input type="checkbox" name="owned" checked={work.owned} onChange={handleChange} />{' '}
                     I own
                     </Label>
                 </FormGroup>
                 <FormGroup>
                     <Label check>
-                    <Input type="checkbox" name="digital" onChange={handleChange} />{' '}
+                    <Input type="checkbox" name="digital" checked={work.digital} onChange={handleChange} />{' '}
                       I own digital copy
                     </Label>
                 </FormGroup>
                 <FormGroup>
                     <Label check>
-                    <Input type="checkbox" name="physical" onChange={handleChange} />{' '}
+                    <Input type="checkbox" name="physical" checked={work.physical} onChange={handleChange} />{' '}
                     I own physical copy
                     </Label>
                 </FormGroup>
                 <FormGroup>
                   <Label check>
-                    <Input type="checkbox" name="played" onChange={handleChange} />{' '}
+                    <Input type="checkbox" name="played" checked={work.played} onChange={handleChange} />{' '}
                     I've played this piece
                     </Label>
                 </FormGroup>
                 <FormGroup>
                 <Label check>
-                    <Input type="checkbox" name="loanedout" onChange={handleChange} />{' '}
+                    <Input type="checkbox" name="loanedout" checked={work.loanedout} onChange={handleChange} />{' '}
                     I have a copy loaned out to someone
                     </Label>
                 </FormGroup>
                 <FormGroup>
-                    <Label for="notes">Notes:</Label>
+                    <Label for="notes">Notes: </Label>
                     <Input type="text" name="notes" placeholder={work.notes} onChange={handleChange}></Input>
                 </FormGroup>
-                <Button>Submit changes</Button>
+                <Button size="sm">Submit changes</Button>
             </Form>
-            <Button onClick={handleDelete}>Delete</Button>
+            <Button onClick={handleDelete} size="sm">Delete</Button>
           </CardBody>
       </Card>
     </div>

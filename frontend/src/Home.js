@@ -7,8 +7,8 @@ function Home () {
         <div>
             <h3>Welcome to My Sheet Music!</h3>
             <p>Login or Sign Up to manage your personal sheet music library.</p>
-            <Button color="primary" href="/signup">Sign Up</Button><br/>
-            <Button color="primary" href="/login">Login</Button>
+            <Button href="/signup">Sign Up</Button><br/><br/>
+            <Button href="/login">Login</Button>
         </div>
     )
 }

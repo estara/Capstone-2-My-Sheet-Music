@@ -30,11 +30,11 @@ function AddWork () {
         <div>
             <h1>Add a piece</h1>
             <Form onSubmit={handleSubmit}>
-                <Input type="text" name="title" placeholder="Title" onChange={handleChange} required/><br/>
-                <Input type="text" name="composer" placeholder="Composer" onChange={handleChange} required/><br/>
-                <Input type="text" name="genre" placeholder="What type of composition?" onChange={handleChange} /><br/>
-                <Input type="text" name="birth" placeholder="Composer birthdate" onChange={handleChange} /><br/>
-                <Input type="text" name="epoch" placeholder="Era" onChange={handleChange} /><br/>
+                <Input type="text" name="title" placeholder="Title" onChange={handleChange} required/><br/><br/>
+                <Input type="text" name="composer" placeholder="Composer" onChange={handleChange} required/><br/><br/>
+                <Input type="text" name="genre" placeholder="What type of composition?" onChange={handleChange} /><br/><br/>
+                <Input type="text" name="birth" placeholder="Composer birthdate" onChange={handleChange} /><br/><br/>
+                <Input type="text" name="epoch" placeholder="Era" onChange={handleChange} /><br/><br/>
                 <Button type="submit">Submit</Button>
             </Form>
         </div>

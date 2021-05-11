@@ -197,7 +197,7 @@ class UserLibrary {
     const item = result.rows[0];
 
     if (!item) throw new NotFoundError(`No item: ${id}`);
-    if (item.api_id !== undefined) {
+    if (item.api_id !== undefined && item.api_id !== null) {
       const outsideRes = await axios.get(`${url}/work/detail/${item.api_id}.json`);
       item.title = outsideRes.data.work.title;
       item.composer = outsideRes.data.work.title;

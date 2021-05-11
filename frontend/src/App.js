@@ -64,8 +64,9 @@ function App() {
   // register new user
   async function signup (formData) {
     const res = await MyMusicApi.signup(formData);
-    localStorage.setItem('token', res);
+    localStorage.setItem('token', res.token);
     localStorage.setItem('username', formData.username);
+    localStorage.setItem('id', res.id)
     setIsLoading(true);
     return formData.username
   }

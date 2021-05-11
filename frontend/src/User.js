@@ -42,15 +42,15 @@ function User () {
     <div>
         <h3>{currentUser.username}'s Library</h3>
         <form onSubmit={handleSubmit}>
-                <label for="name">Name:</label><br/>
-                <input type="text" name="name" placeholder={currentUser.name} onChange={handleChange}/><br/>
-                <label for="email">Email:</label><br/>
-                <input type="text" name="email" placeholder={currentUser.email} onChange={handleChange}/><br/>
-                <label for="password">Confirm password to make changes:</label><br/>
-                <input type="password" name="password" onChange={handleChange}/><br/>
+                <label for="name">Name</label><br/>
+                <input type="text" name="name" placeholder={currentUser.name} onChange={handleChange}/><br/><br/>
+                <label for="email">Email</label><br/>
+                <input type="text" name="email" placeholder={currentUser.email} onChange={handleChange}/><br/><br/>
+                <label for="password">Confirm password to make changes</label><br/>
+                <input type="password" name="password" onChange={handleChange}/><br/><br/>
                 <button type="submit">Save Changes</button>
-            </form>
-        <Button onClick={deleteClick} size="sm">Delete User</Button>
+            </form><br/>
+        <Button onClick={deleteClick} size="sm">Delete User</Button><br/><br/>
         {userLib ? userLib.map(work => (<UserLibCard work={work}/>)) : <div></div>}
     </div>
   )

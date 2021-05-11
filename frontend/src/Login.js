@@ -37,10 +37,10 @@ function Login ({ login }) {
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
                     <Input type="text" name="username" placeholder="Username" onChange={handleChange} required/>
-                </FormGroup>
+                </FormGroup><br/>
                 <FormGroup>
                     <Input type="text" name="password" placeholder="Password" onChange={handleChange} required/>
-                </FormGroup>
+                </FormGroup><br/>
                 <Button>Submit</Button>
             </Form>
         </div>

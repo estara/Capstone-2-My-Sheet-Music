@@ -36,16 +36,16 @@ function Signup ({ signup }) {
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
                     <Input type="text" name="username" placeholder="Username" onChange={handleChange} required></Input>
-                </FormGroup>
+                </FormGroup><br/>
                 <FormGroup>
                     <Input type="text" name="name" placeholder="Name" onChange={handleChange} required></Input>
-                </FormGroup>
+                </FormGroup><br/>
                 <FormGroup>
                     <Input type="text" name="email" placeholder="Email" onChange={handleChange} required></Input>
-                </FormGroup>
+                </FormGroup><br/>
                 <FormGroup>
                     <Input type="password" name="password" placeholder="Password" onChange={handleChange} required></Input>
-                </FormGroup>
+                </FormGroup><br/>
                 <Button>Sign up</Button>
             </Form>
         </div>

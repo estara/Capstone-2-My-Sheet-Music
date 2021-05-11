@@ -20,10 +20,11 @@ class Library {
 
   static async create({ title, composer, birth, genre, epoch, popular }) {
     const duplicateCheck = await db.query(
-          `SELECT title
+          `SELECT title,
+                  composer
            FROM library
-           WHERE title = $1`,
-        [title]);
+           WHERE title = $1 AND composer = $2`,
+        [title, composer]);
 
     if (duplicateCheck.rows[0])
       throw new BadRequestError(`Duplicate work: ${title}`);

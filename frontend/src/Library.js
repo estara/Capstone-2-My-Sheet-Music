@@ -53,12 +53,6 @@ function Library() {
                 <Label for="genre" className="mr-sm-2"> Type of composition </Label>
                 <Input type="text" name="genre" id="genre" onChange={handleChange}/>
             </FormGroup>
-            <FormGroup check>
-                <Label check>
-                <Input type="checkbox" />{' '}
-                        Popular works 
-                </Label>
-            </FormGroup>
             <Button>Filter</Button>
         </Form> <br/>
 
