@@ -1,7 +1,7 @@
 # Welcome to My Sheet Music!
 API used: Open Opus API
 
-Deployed at https://my-sheet-music.netlify.app/
+Deployed at https://master.d1ve5tin4apnez.amplifyapp.com/
 
 This is an easy sheet music database so musicians can track what they own and have played with ease.
 
