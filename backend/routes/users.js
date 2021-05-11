@@ -6,12 +6,11 @@ const jsonschema = require("jsonschema");
 const axios = require("axios");
 const express = require("express");
 const { ensureCorrectUserOrAdmin, ensureAdmin } = require("../middleware/auth");
-const { BadRequestError } = require("../expressError");
+const { BadRequestError, UnauthorizedError } = require("../expressError");
 const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
-const { assertExpressionStatement } = require("@babel/types");
 const url = "https://api.openopus.org"
 
 const router = express.Router();
@@ -93,7 +92,8 @@ router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, nex
 /** PATCH /[username] { user } => { user }
  *
  * Data can include:
- *   { name, password, email }
+ *   { name, email }
+ * Password required for authorization
  *
  * Returns { username, name, email, isAdmin }
  *
@@ -107,9 +107,13 @@ router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, n
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
+    const isValid = await User.authenticate(req.params.username, req.body.password);
 
-    const user = await User.update(req.params.username, req.body);
-    return res.json({ user });
+    if (isValid) {
+      const user = await User.update(req.params.username, req.body);
+      return res.json({ user });
+    } throw new UnauthorizedError('Bad password');
+    
   } catch (err) {
     return next(err);
   }
@@ -131,18 +135,17 @@ router.delete("/:username", ensureCorrectUserOrAdmin, async function (req, res, 
 });
 
 
-/** POST /[username]/jobs/[id]  { state } => { application }
+/** POST /[id]/jobs/[workId]  { state } => { application }
  *
  * Returns {"added": workId}
  *
  * Authorization required: correct user or admin
  * */
 
-router.post("/:user/userLib/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.post("/:id/userLib/:workId", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
-    const workId = +req.params.id;
-    await User.addToUserLib(+req.params.user, workId);
-    return res.json({ added: workId });
+    await User.addToUserLib(+req.params.id, +req.params.workId);
+    return res.json({ added: req.params.workId });
   } catch (err) {
     return next(err);
   }

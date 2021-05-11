@@ -67,12 +67,13 @@ router.get("/user/:id", ensureCorrectUserOrAdmin, async function (req, res, next
     const library = await UserLibrary.findAll(req.params.id, q);
 
     for (let work of library) {
-      if (work.title === null) {
-        const apiWork = await axios.get(`${url}/work/detail/${work.id}.json`);
-        work.title = apiWork.work.title;
-        work.composer = apiWork.composer.complete_name;
+      if (work.api_id !== null) {
+        const apiWork = await axios.get(`${url}/work/detail/${work.api_id}.json`);
+        work.title = apiWork.data.work.title;
+        work.composer = apiWork.data.composer.complete_name;
       }
     }
+
     return res.json({ library });
   } catch (err) {
     return next(err);
@@ -86,9 +87,9 @@ router.get("/user/:id", ensureCorrectUserOrAdmin, async function (req, res, next
  * Authorization required: correct user or admin
  */
 
-router.get("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.get("/:workId", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
-    const work = await UserLibrary.get(req.params.id);
+    const work = await UserLibrary.get(+req.params.workId);
     if (work.title === null) {
       const apiWork = await axios.get(`${url}/work/detail/${work.id}.json`);
       work.title = apiWork.work.title;
@@ -110,7 +111,7 @@ router.get("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
  * Authorization required: correct user or admin
  */
 
-router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.patch("/:id/:workId", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
     for (let field in req.body) {
       if (req.body[field] === "on") {
@@ -124,22 +125,22 @@ router.patch("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
       throw new BadRequestError(errs);
     }
 
-    const work = await UserLibrary.update(req.params.id, req.body);
+    const work = await UserLibrary.update(+req.params.workId, req.body);
     return res.json({ work });
   } catch (err) {
     return next(err);
   }
 });
 
-/** DELETE /[handle]  =>  { deleted: id }
+/** DELETE /[workId]  =>  { deleted: id }
  *
  * Authorization required: correct user or admin
  */
 
-router.delete("/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.delete("/:id/:workId", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
-    await UserLibrary.remove(req.params.id);
-    return res.json({ deleted: +req.params.id });
+    await UserLibrary.remove(+req.params.workId);
+    return res.json({ deleted: +req.params.workId });
   } catch (err) {
     return next(err);
   }

@@ -3,13 +3,14 @@ import { useHistory } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import UserLibCard from './UserLibCard';
 import MyMusicApi from './api.js';
-import { CurrentUserContext, UserLibContext } from './MyMusicContext';
+import { CurrentUserContext, CurrentUserDispatchContext, UserLibContext } from './MyMusicContext';
 
 function User () {
   const currentUser = useContext(CurrentUserContext);
+  const setCurrentUser = useContext(CurrentUserDispatchContext);
+  const userLib = useContext(UserLibContext);
   const history = useHistory();
   const initialState = {firstName: currentUser.firstName, lastName: currentUser.lastName, email: currentUser.email, password: ""};
-  const userLib = useContext(UserLibContext);
   const [formData, setFormData] = useState(initialState);
 
   // handle user form input before submit
@@ -24,14 +25,16 @@ function User () {
   // submit updates to user profile
   async function handleSubmit (evt) {
       evt.preventDefault();
-      await MyMusicApi.updateUser(currentUser.id, formData);
+      await MyMusicApi.updateUser(currentUser.username, formData);
       setFormData(initialState);
     }
 
   // delete user upon click
   async function deleteClick (evt) {
     evt.preventDefault();
-    await MyMusicApi.deleteUser(currentUser.id);
+    await MyMusicApi.deleteUser(currentUser.username);
+    localStorage.clear();
+    setCurrentUser(null);
     history.push('/');
   }
 

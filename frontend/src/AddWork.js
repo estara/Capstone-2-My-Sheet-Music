@@ -25,6 +25,7 @@ function AddWork () {
         history.push('/library')
     }
 
+    // display page for adding new work to library
     return (
         <div>
             <h1>Add a piece</h1>
@@ -33,8 +34,7 @@ function AddWork () {
                 <Input type="text" name="composer" placeholder="Composer" onChange={handleChange} required/><br/>
                 <Input type="text" name="genre" placeholder="What type of composition?" onChange={handleChange} /><br/>
                 <Input type="text" name="birth" placeholder="Composer birthdate" onChange={handleChange} /><br/>
-                <Input type="text" name="epoch " placeholder="Era" onChange={handleChange} /><br/>
-                <Input type="checkbox" name="popular" placeholder="Is this a popular piece?" onChange={handleChange}/>
+                <Input type="text" name="epoch" placeholder="Era" onChange={handleChange} /><br/>
                 <Button type="submit">Submit</Button>
             </Form>
         </div>

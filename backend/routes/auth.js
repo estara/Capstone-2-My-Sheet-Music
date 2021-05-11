@@ -12,7 +12,7 @@ const userNewSchema = require("../schemas/userNew.json");
 const userAuthSchema = require("../schemas/userAuth.json");
 const { BadRequestError } = require("../expressError");
 
-/** POST /auth/token:  { username, password } => { token }
+/** POST /auth/token:  { id, username, password } => { token }
  *
  * Returns JWT token which can be used to authenticate further requests.
  *
@@ -30,7 +30,8 @@ router.post("/token", async function (req, res, next) {
     const { username, password } = req.body;
     const user = await User.authenticate(username, password);
     const token = createToken(user);
-    return res.json({ token });
+    const result = {token: token, id: user.id}
+    return res.json({ result });
   } catch (err) {
     return next(err);
   }

@@ -11,7 +11,7 @@ function Library() {
     const library = useContext(LibraryContext);
     const setLibrary = useContext(LibraryDispatchContext);
 
-    // handle user changing form
+    // handle user changing search form
     const handleChange = evt => {
         const { name, value } = evt.target;
         setFormData(fData => ({
@@ -26,11 +26,10 @@ function Library() {
         if (!formData) {return};
         const newWorks = await MyMusicApi.getLibrary(formData);
         setLibrary(newWorks.library);
-        console.log(library)
         setFormData({});
     }
 
-    // display list of users
+    // display library catalog
     return (
         <div>
             <h2>Check out our sheet music library!</h2>

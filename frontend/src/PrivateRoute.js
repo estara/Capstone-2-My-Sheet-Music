@@ -5,6 +5,7 @@ import { CurrentUserContext } from './MyMusicContext';
 function PrivateRoute ({ component: Component, ...rest }) {
     const currentUser = useContext(CurrentUserContext);
 
+    // protect restricted routes from access by the wrong person
     return(
     <Route 
     {...rest}

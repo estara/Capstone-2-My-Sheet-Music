@@ -22,7 +22,7 @@ describe("config can come from env", function () {
     expect(config.getDatabaseUri()).toEqual("mysheetmusic");
     process.env.NODE_ENV = "test";
 
-    expect(config.getDatabaseUri()).toEqual("mysheetmusic");
+    expect(config.getDatabaseUri()).toEqual("mysheetmusic_test");
   });
 })
 

@@ -9,9 +9,7 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  testWorksOwnedIds,
   testLibraryIds,
-  testUserIds,
   u1Token,
   u2Token,
 } = require("./_testCommon");
@@ -72,7 +70,11 @@ describe("POST /library", function () {
     const resp = await request(app)
         .post("/library")
         .send({
-          ...newWork,
+          title: "new",
+          composer: "newC",
+          genre: "Opera",
+          birth: "1900-01-01",
+          epoch: "Late Romantic",
           popular: "not-a-bool",
         })
         .set("authorization", `Bearer ${u1Token}`);

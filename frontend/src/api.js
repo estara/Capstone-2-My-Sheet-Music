@@ -12,6 +12,7 @@ class MyMusicApi {
   // the token for interacting with the API will be stored here.
   static token;
 
+  // send request to backend
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
     const url = `${BASE_URL}/${endpoint}`;
@@ -57,8 +58,8 @@ class MyMusicApi {
   // login user
   static async login(formData) {
     let res = await this.request(`auth/token`, formData, "POST");
-    this.token = res.token;
-    return this.token;
+    this.token = res.result.token;
+    return res.result
   }
 
   // logout user
@@ -97,8 +98,7 @@ class MyMusicApi {
 
   // add work to user library
   static async addItem(username, id) {
-    const res = await this.request(`users/${username}/userLib/${id}`, {}, "POST");
-    console.log(res)
+    await this.request(`users/${username}/userLib/${id}`, {}, "POST");
   }
   
   // get user's library
@@ -114,14 +114,14 @@ class MyMusicApi {
   }
 
   // update info on single entry in user's library
-  static async updateUserWork(id, formData) {
-    const res = await this.request(`userLib/${id}`, formData, "PATCH");
+  static async updateUserWork(id, workId, formData) {
+    const res = await this.request(`userLib/${id}/${workId}`, formData, "PATCH");
     return res;
   }
 
   // delete entry from user's library
-  static async deleteUserWork(id) {
-    const res = await this.request(`userLib/${id}`, "DELETE");
+  static async deleteUserWork(id, workId) {
+    const res = await this.request(`userLib/${id}/${workId}`, {}, "DELETE");
     return res
   }
 }

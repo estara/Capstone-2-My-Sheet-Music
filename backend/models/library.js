@@ -4,7 +4,6 @@ const db = require("../db");
 const axios = require("axios");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
-// const { nextTick } = require("node:process");
 const url = "https://api.openopus.org";
 
 /** Related functions for library. */
@@ -170,9 +169,8 @@ class Library {
                                 epoch,
                                 popular`;
     const result = await db.query(querySql, [...values, id]);
-    console.log(result.rows[0])
     const work = result.rows[0];
-
+    
     if (!work) throw new NotFoundError(`No local work: ${id}`);
 
     return work;

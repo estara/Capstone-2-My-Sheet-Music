@@ -33,13 +33,12 @@ describe("POST /userLib", function () {
     expect(resp.body).toEqual({work: {id: expect.any(Number), owned: false, digital: false, physical: true, played: false, loanedout: true, notes: "note1"},});
   });
 
-  test("auth for users", async function () {
+  test("unauth for users", async function () {
     const resp = await request(app)
         .post(`/userLib`)
         .send({ owned: false, digital: false, physical: true, played: false, loanedout: true, notes: "note1", api_id: null, library_id: testLibraryIds[0], user_id: testUserIds[2]})
         .set("authorization", `Bearer ${u2Token}`);
-    expect(resp.statusCode).toEqual(201);
-    expect(resp.body).toEqual({ owned: false, digital: false, physical: true, played: false, loanedout: true, notes: "note1"});
+    expect(resp.statusCode).toEqual(401);
   });
 
   test("unath for anon", async function () {
@@ -88,8 +87,7 @@ describe("GET /userLib/user/:id", function () {
     .set("authorization", `Bearer ${u2Token}`);
     expect(resp.body).toEqual({
           library: [
-            { owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w1", composer: "C1" },
-            { owned: null, digital: null, physical: null, played: null, loanedout: null, notes: null, title: "w2", composer: "C2" },
+            {id: expect.any(Number), owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w1", composer: "C1" }
           ],
         },
     );
@@ -190,7 +188,7 @@ describe("PATCH /userLib/:id", function () {
       loanedout: true,
     })
     .set("authorization", `Bearer ${u2Token}`);
-    expect(resp.body).toEqual({ id: testWorksOwnedIds[1], owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w1", composer: "C1" });
+    expect(resp.body).toEqual({work: { id: testWorksOwnedIds[1], owned: true, digital: true, physical: true, played: true, loanedout: true, notes: null, title: "w1", composer: "C1" },});
   });
 
   test("unauth for others", async function () {

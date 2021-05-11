@@ -15,7 +15,7 @@ const librarySearchSchema = require("../schemas/librarySearch.json");
 const url = "https://api.openopus.org";
 const router = new express.Router();
 
-/* get results from Open Opus API
+/* get search results from Open Opus API
 */
 async function getMore(query1, query2 = null) {
   try{

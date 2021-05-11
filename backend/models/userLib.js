@@ -1,11 +1,12 @@
 "use strict";
 
+const { default: axios } = require("axios");
 const db = require("../db");
 const { NotFoundError} = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
+const url = "https://api.openopus.org"
 
-
-/** Related functions for companies. */
+/** Related functions for user library. */
 
 class UserLibrary {
   /** Create a library selection (from data), update db, return new library selection data.
@@ -44,7 +45,7 @@ class UserLibrary {
     return item;
   }
 
-  /** Find all library selections (optional filter on searchFilters).
+  /** Find all user library selections (optional filter on searchFilters).
    *
    * searchFilters (all optional):
    * - owned
@@ -60,6 +61,7 @@ class UserLibrary {
 
   static async findAll(user_id, { owned, digital, physical, played, loanedout, title, composer } = {}) {
     let query = `SELECT ul.id,
+                        ul.api_id,
                         ul.digital,
                         ul.owned,
                         ul.physical,
@@ -120,6 +122,7 @@ class UserLibrary {
 
     query += " ORDER BY l.title";
     const itemsRes = await db.query(query, queryValues);
+
     return itemsRes.rows;
   }
 
@@ -183,6 +186,7 @@ class UserLibrary {
                       WHERE id = ${idVarIdx} 
                       RETURNING id, 
                                 library_id,
+                                api_id,
                                 owned, 
                                 digital, 
                                 physical,
@@ -193,23 +197,29 @@ class UserLibrary {
     const item = result.rows[0];
 
     if (!item) throw new NotFoundError(`No item: ${id}`);
-    
-    const libraryRes = await db.query(
-      `SELECT title,
-              composer
-       FROM library
-       WHERE id = $1`, [item.library_id]);
-
-    delete item.library_id;
-    item.title = libraryRes.rows[0].title;
-    item.composer = libraryRes.rows[0].composer;
-
+    if (item.api_id !== undefined) {
+      const outsideRes = await axios.get(`${url}/work/detail/${item.api_id}.json`);
+      item.title = outsideRes.data.work.title;
+      item.composer = outsideRes.data.work.title;
+      delete item.api_id;
+      delete item.library_id;
+    } else {
+      const libraryRes = await db.query(
+        `SELECT title,
+                composer
+         FROM library
+         WHERE id = $1`, [item.library_id]);
+  
+      delete item.library_id;
+      item.title = libraryRes.rows[0].title;
+      item.composer = libraryRes.rows[0].composer;
+    }
     return item;
   }
 
-  /** Delete given job from database; returns undefined.
+  /** Delete given work from database; returns undefined.
    *
-   * Throws NotFoundError if company not found.
+   * Throws NotFoundError if work not found.
    **/
 
   static async remove(id) {

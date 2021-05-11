@@ -1,5 +1,5 @@
 "use strict";
-
+// launch server for backend
 const app = require("./app");
 const { PORT } = require("./config");
 

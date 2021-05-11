@@ -12,7 +12,7 @@ import './NavBar.css';
 function NavBar ({ logout }) {
   const currentUser = useContext(CurrentUserContext);
 
-  // display navbar at top of page, provides access to admin page if logged in
+  // display navbar at top of page, provides access to user's library if logged in
   return (
     <div>
       <Navbar color="light" light expand="md">

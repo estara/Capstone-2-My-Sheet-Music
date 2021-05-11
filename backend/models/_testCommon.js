@@ -3,9 +3,9 @@ const bcrypt = require("bcrypt");
 const db = require("../db.js");
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
 
-const testWorksOwned = [];
-const testLibrary = [];
-const testUser = [];
+let testWorksOwned = [];
+let testLibrary = [];
+let testUser = [];
 
 async function commonBeforeAll() {
   // make sure db is clear
@@ -26,7 +26,7 @@ async function commonBeforeAll() {
   // add users
   const userResults = await db.query(`
         INSERT INTO users (username,
-                          hashed_password,
+                          password,
                           name,
                           email,
                           is_admin)

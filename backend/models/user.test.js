@@ -28,6 +28,7 @@ describe("authenticate", function () {
   test("works", async function () {
     const user = await User.authenticate("u1", "password1");
     expect(user).toEqual({
+      id: testUser[0],
       username: "u1",
       name: "U1F",
       email: "u1@email.com",
@@ -75,7 +76,7 @@ describe("register", function () {
     const found = await db.query(`SELECT * FROM users WHERE username = 'new'`);
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].is_admin).toEqual(false);
-    expect(found.rows[0].hashed_password.startsWith("$2b$")).toEqual(true);
+    expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
   test("works: adds admin", async function () {
@@ -96,7 +97,7 @@ describe("register", function () {
     const found = await db.query(`SELECT * FROM users WHERE username = 'new'`);
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].is_admin).toEqual(true);
-    expect(found.rows[0].hashed_password.startsWith("$2b$")).toEqual(true);
+    expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
   test("bad request with dup data", async function () {
@@ -190,7 +191,7 @@ describe("update", function () {
 
   test("works: set password", async function () {
     let user = await User.update("u1", {
-      hashed_password: "new",
+      password: "new",
     });
     expect(user).toEqual({
       username: "u1",
@@ -200,7 +201,7 @@ describe("update", function () {
     });
     const found = await db.query(`SELECT * FROM users WHERE username = 'u1'`);
     expect(found.rows.length).toEqual(1);
-    expect(found.rows[0].hashed_password.startsWith("$2b$")).toEqual(true);
+    expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
   });
 
   test("not found if no such user", async function () {

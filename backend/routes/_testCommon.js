@@ -61,13 +61,13 @@ async function commonBeforeAll() {
     password: "password1",
     isAdmin: true,
   })).id;
-  testUserIds[1] = (await User.register({
+   testUserIds[1] = (await User.register({
     username: "u2",
     name: "U2",
     email: "user2@user.com",
     password: "password2",
     isAdmin: false,
-  })).id;
+  })).id
   testUserIds[2] = (await User.register({
     username: "u3",
     name: "U3",
@@ -75,11 +75,6 @@ async function commonBeforeAll() {
     password: "password3",
     isAdmin: false,
   })).id;
-
-  // add works to user's library
-  // await User.addToUserLib(testUserIds[0], testLibraryIds[0]);
-  // await User.addToUserLib(testUserIds[1], testLibraryIds[1]);
-  // await User.addToUserLib(testUserIds[0], testLibraryIds[2]);
   
   // add details to user's works
   testWorksOwnedIds[0] = (await UserLibrary.create(
@@ -90,7 +85,6 @@ async function commonBeforeAll() {
       { owned: false, digital: false, physical: false, played: true, loanedout: false, notes: "note4", api_id: null, library_id: testLibraryIds[3], user_id: testUserIds[2]})).id;
 
   
-
   
 }
 
@@ -107,8 +101,8 @@ async function commonAfterAll() {
 }
 
 
-const u1Token = createToken({ username: "u1", isAdmin: true });
-const u2Token = createToken({ username: "u2", isAdmin: false });
+const u1Token = createToken({ id: testUserIds[0], username: "u1", isAdmin: true });
+const u2Token = createToken({ id: testUserIds[1], username: "u2", isAdmin: false });
 
 module.exports = {
   commonBeforeAll,

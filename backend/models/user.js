@@ -24,8 +24,9 @@ class User {
   static async authenticate(username, password) {
     // try to find the user first
     const result = await db.query(
-          `SELECT username,
-                  hashed_password,
+          `SELECT id,
+                  username,
+                  password,
                   name,
                   email,
                   is_admin AS "isAdmin"
@@ -37,10 +38,10 @@ class User {
     const user = result.rows[0];
 
     if (user) {
-      // compare hashed password to a new hash from password
-      const isValid = await bcrypt.compare(password, user.hashed_password);
+      // compare hashed password to a new password
+      const isValid = await bcrypt.compare(password, user.password);
       if (isValid) {
-        delete user.hashed_password;
+        delete user.password;
         return user;
       }
     }
@@ -73,7 +74,7 @@ class User {
     const result = await db.query(
           `INSERT INTO users
            (username,
-            hashed_password,
+            password,
             name,
             email,
             is_admin)
@@ -137,20 +138,9 @@ class User {
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
     const userLibRes = await db.query(
-          `SELECT ul.id,
-                  ul.api_id,
-                  ul.owned,
-                  ul.played,
-                  ul.digital,
-                  ul.physical,
-                  ul.notes,
-                  ul.loanedout,
-                  l.title,
-                  l.composer
-           FROM user_library AS ul 
-           LEFT JOIN library AS l
-           ON ul.library_id = l.id
-           WHERE ul.user_id = $1`, [user.id]);
+          `SELECT id
+           FROM user_library 
+           WHERE user_id = $1`, [user.id]);
 
     user.works = userLibRes.rows.map(ul => ul.id);
     return user;
@@ -170,8 +160,8 @@ class User {
    */
 
   static async update(username, data) {
-    if (data.hashed_password) {
-      data.hashed_password = await bcrypt.hash(data.hashed_password, BCRYPT_WORK_FACTOR);
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
     }
 
     const { setCols, values } = sqlForPartialUpdate(data, {});
@@ -217,28 +207,33 @@ class User {
 
   static async addToUserLib(id, workId) {
 
-    const preCheck = await db.query(
-          `SELECT id
-           FROM library
-           WHERE id = $1`, [workId]);
-    const work = preCheck.rows[0];
-
-    if (!work) throw new NotFoundError(`No work: ${workId}`);
-
-    const preCheck2 = await db.query(
-          `SELECT id
-           FROM users
-           WHERE id = $1`, [id]);
-           
-    const user = preCheck2.rows[0];
+    const preCheck1 = await db.query(
+      `SELECT id
+       FROM users
+       WHERE id = $1`, [id]);
+       
+    const user = preCheck1.rows[0];
 
     if (!user) throw new NotFoundError(`No username: ${id}`);
 
-    await db.query(
-          `INSERT INTO user_library (library_id, user_id)
-           VALUES ($1, $2)`,
+    const preCheck2 = await db.query(
+          `SELECT id
+           FROM library
+           WHERE id = $1`, [workId]);
+    const work = preCheck2.rows[0];
+
+    if (!work) {
+      await db.query(
+        `INSERT INTO user_library (api_id, user_id)
+         VALUES ($1, $2)`,
+      [workId, id]);
+    } else {
+      await db.query(
+        `INSERT INTO user_library (library_id, user_id)
+         VALUES ($1, $2)`,
         [workId, id]);
-  }
+    }
+  }   
 }
 
 

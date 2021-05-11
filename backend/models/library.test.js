@@ -8,7 +8,6 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  testWorksOwned,
   testLibrary
 } = require("./_testCommon");
 
@@ -170,9 +169,9 @@ describe("update", function () {
 describe("remove", function () {
   test("works", async function () {
     const res = await Library.remove(testLibrary[0]);
-    expect(res).toEqual(`${testLibrary[0]}`);
+    expect(res).toEqual({id: testLibrary[0]});
     const res2 = await db.query(
-        `SELECT id FROM library WHERE id = $${testLibrary[0]}`);
+        `SELECT id FROM library WHERE id = ${testLibrary[0]}`);
     expect(res2).toEqual(`No local work: ${testLibrary[0]}`);
   });
 

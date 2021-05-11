@@ -1,5 +1,6 @@
 import React from 'react';
 
+// create contexts
 const CurrentUserContext = React.createContext();
 const CurrentUserDispatchContext = React.createContext();
 const LibraryContext = React.createContext();

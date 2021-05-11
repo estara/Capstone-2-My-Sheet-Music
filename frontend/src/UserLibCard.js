@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Card, CardBody, CardTitle, Button, Form, FormGroup, Input, Label
 } from 'reactstrap';
 import './UserLibCard.css';
 import MyMusicApi from './api.js';
+import { CurrentUserContext } from './MyMusicContext';
 
 function UserLibCard ({ work }) {
+  const currentUser = useContext(CurrentUserContext);
   const initialState = {owned: work.owned, digital: work.digital, physical: work.physical, played: work.played, loanedout: work.loanedout, notes: work.notes}
   const [formData, setFormData] = useState(initialState);
 
@@ -21,14 +23,14 @@ function UserLibCard ({ work }) {
   // update work
   async function handleSubmit (evt) {
     evt.preventDefault();
-    await MyMusicApi.updateUserWork(work.id, formData);
+    await MyMusicApi.updateUserWork(currentUser.id, work.id, formData);
     setFormData(initialState);
   }
 
   // delete work
   async function handleDelete (evt) {
     evt.preventDefault();
-    await MyMusicApi.deleteUserWork(work.id);
+    await MyMusicApi.deleteUserWork(currentUser.id, work.id);
   }
 
   // display user detail card

@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, FormGroup, Button, Input } from 'reactstrap';
-import { CurrentUserContext } from './MyMusicContext';
 import { useHistory } from 'react-router-dom';
 
 function Login ({ login }) {
-    const currentUser = useContext(CurrentUserContext);
     const initialState = {username: "", password: ""};
     const [formData, setFormData] = useState(initialState);
     const history = useHistory();

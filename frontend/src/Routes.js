@@ -11,6 +11,7 @@ import AddWork from './AddWork';
 
 function Routes ({ logout, login, signup }) {
 
+    // routes for app
     return (
         <div className="Routes">
           <BrowserRouter>

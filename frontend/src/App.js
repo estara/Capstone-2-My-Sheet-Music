@@ -6,17 +6,17 @@ import Routes from './Routes';
 
 function App() {
   // create states for needed information
-  const [currentUser, setCurrentUser] = useState('');
+  const [currentUser, setCurrentUser] = useState('foo');
   const [isLoading, setIsLoading] = useState(true);
   const [library, setLibrary] = useState();
   const [userLib, setUserLib] = useState([]);
   
-  // get needed information on load if user is stored in localstorage
+  // get needed information on load
   useEffect(() => {
     async function onLoad() {
       try{
       const token = localStorage.getItem('token');
-      console.log(token)
+      const id = localStorage.getItem('id');
       MyMusicApi.token = token;
       const username = localStorage.getItem('username');
       const user = await MyMusicApi.getUser(username);
@@ -26,11 +26,13 @@ function App() {
       
       if (user.user.works) {
         try{
-      const userLibList = await MyMusicApi.getUserLib(user.user.id);
+      const userLibList = await MyMusicApi.getUserLib(id);
       setUserLib(userLibList.library);
-        }catch(err) {}
+        } catch(err) {}
       }
+
       setIsLoading(false);
+
       } catch (err) {
         const libraryList = await MyMusicApi.getLibrary();
         setLibrary(libraryList.library);
@@ -44,8 +46,9 @@ function App() {
   // login user
   async function login(formData) {
     const res = await MyMusicApi.login(formData);
-    setCurrentUser({token: res, username: formData.username});
-    localStorage.setItem('token', res);
+    setCurrentUser({token: res.token, username: formData.username, id: res.id});
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('id', res.id)
     localStorage.setItem('username', formData.username)
     setIsLoading(true);
     return formData.username
@@ -54,9 +57,8 @@ function App() {
   // logout user
   async function logout() {
     await MyMusicApi.logout();
+    localStorage.clear();
     setCurrentUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
   }
 
   // register new user
@@ -67,8 +69,6 @@ function App() {
     setIsLoading(true);
     return formData.username
   }
-
-  
 
   // display loading message while loading
   if (isLoading) {
