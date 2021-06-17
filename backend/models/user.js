@@ -24,7 +24,7 @@ class User {
   static async authenticate(username, password) {
     // try to find the user first
     const result = await db.query(
-          `SELECT id,
+      `SELECT id,
                   username,
                   password,
                   name,
@@ -32,7 +32,7 @@ class User {
                   is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
-        [username],
+      [username]
     );
 
     const user = result.rows[0];
@@ -56,13 +56,12 @@ class User {
    * Throws BadRequestError on duplicates.
    **/
 
-  static async register(
-      { username, password, name, email, isAdmin }) {
+  static async register({ username, password, name, email, isAdmin }) {
     const duplicateCheck = await db.query(
-          `SELECT username
+      `SELECT username
            FROM users
            WHERE username = $1`,
-        [username],
+      [username]
     );
 
     if (duplicateCheck.rows[0]) {
@@ -72,7 +71,7 @@ class User {
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
     const result = await db.query(
-          `INSERT INTO users
+      `INSERT INTO users
            (username,
             password,
             name,
@@ -80,13 +79,7 @@ class User {
             is_admin)
            VALUES ($1, $2, $3, $4, $5)
            RETURNING id, username, name, email, is_admin AS "isAdmin"`,
-        [
-          username,
-          hashedPassword,
-          name,
-          email,
-          isAdmin,
-        ],
+      [username, hashedPassword, name, email, isAdmin]
     );
 
     const user = result.rows[0];
@@ -101,12 +94,12 @@ class User {
 
   static async findAll() {
     const result = await db.query(
-          `SELECT username,
+      `SELECT username,
                   name,
                   email,
                   is_admin AS "isAdmin"
            FROM users
-           ORDER BY username`,
+           ORDER BY username`
     );
 
     return result.rows;
@@ -121,16 +114,15 @@ class User {
    **/
 
   static async get(username) {
-
     const userRes = await db.query(
-          `SELECT id,
+      `SELECT id,
                   username,
                   name,
                   email,
                   is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
-        [username],
+      [username]
     );
 
     const user = userRes.rows[0];
@@ -138,11 +130,13 @@ class User {
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
     const userLibRes = await db.query(
-          `SELECT id
+      `SELECT id
            FROM user_library 
-           WHERE user_id = $1`, [user.id]);
+           WHERE user_id = $1`,
+      [user.id]
+    );
 
-    user.works = userLibRes.rows.map(ul => ul.id);
+    user.works = userLibRes.rows.map((ul) => ul.id);
     return user;
   }
 
@@ -187,17 +181,16 @@ class User {
 
   static async remove(username) {
     let result = await db.query(
-          `DELETE
+      `DELETE
            FROM users
            WHERE username = $1
            RETURNING username`,
-        [username],
+      [username]
     );
     const user = result.rows[0];
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
   }
-
 
   /** Add to user_lib: update db, returns undefined.
    *
@@ -206,35 +199,39 @@ class User {
    **/
 
   static async addToUserLib(id, workId) {
-
     const preCheck1 = await db.query(
       `SELECT id
        FROM users
-       WHERE id = $1`, [id]);
-       
+       WHERE id = $1`,
+      [id]
+    );
+
     const user = preCheck1.rows[0];
 
     if (!user) throw new NotFoundError(`No username: ${id}`);
 
     const preCheck2 = await db.query(
-          `SELECT id
+      `SELECT id
            FROM library
-           WHERE id = $1`, [workId]);
+           WHERE id = $1`,
+      [workId]
+    );
     const work = preCheck2.rows[0];
 
     if (!work) {
       await db.query(
         `INSERT INTO user_library (api_id, user_id)
          VALUES ($1, $2)`,
-      [workId, id]);
+        [workId, id]
+      );
     } else {
       await db.query(
         `INSERT INTO user_library (library_id, user_id)
          VALUES ($1, $2)`,
-        [workId, id]);
+        [workId, id]
+      );
     }
-  }   
+  }
 }
-
 
 module.exports = User;

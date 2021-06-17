@@ -16,42 +16,50 @@ const url = "https://api.openopus.org";
 const router = new express.Router();
 
 /* get search results from Open Opus API
-*/
+ */
 async function getMore(query1, query2 = null) {
-  try{
+  try {
     let outsideResults = [];
     if (query2 === null) {
-      const composerWorks = await axios.get(`${url}/omnisearch/${query1}/0.json`);
+      const composerWorks = await axios.get(
+        `${url}/omnisearch/${query1}/0.json`
+      );
       for (let entry of composerWorks.data.results) {
         if (entry.work !== null) {
           outsideResults.push({
-            id: entry.work.id, 
-            title: entry.work.title, 
-            composer: entry.composer.complete_name, 
-            genre: entry.work.genre, 
-            birth: entry.composer.birth, 
-            epoch: entry.composer.epoch, 
-            popular: false});
-          }
-      };
+            id: entry.work.id,
+            title: entry.work.title,
+            composer: entry.composer.complete_name,
+            genre: entry.work.genre,
+            birth: entry.composer.birth,
+            epoch: entry.composer.epoch,
+            popular: false,
+          });
+        }
+      }
     } else if (q.title && q.composer) {
-      const composerWorks = await axios.get(`${url}/omnisearch/${query1}%20${query2}/0.json`);
+      const composerWorks = await axios.get(
+        `${url}/omnisearch/${query1}%20${query2}/0.json`
+      );
       for (let entry of composerWorks.data.results) {
         if (entry.work !== null) {
           outsideResults.push({
-            id: entry.work.id, 
-            title: entry.work.title, 
-            composer: entry.composer.complete_name, 
-            genre: entry.work.genre, 
-            birth: entry.composer.birth, 
-            epoch: entry.composer.epoch, 
-            popular: false});
-          }
-      };
-    };
-    return outsideResults
-    } catch (err) {console.error(err)}
+            id: entry.work.id,
+            title: entry.work.title,
+            composer: entry.composer.complete_name,
+            genre: entry.work.genre,
+            birth: entry.composer.birth,
+            epoch: entry.composer.epoch,
+            popular: false,
+          });
+        }
+      }
+    }
+    return outsideResults;
+  } catch (err) {
+    console.error(err);
   }
+}
 
 /** POST / { library } =>  { library }
  *
@@ -66,7 +74,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, libraryNewSchema);
     if (!validator.valid) {
-      const errs = validator.errors.map(e => e.stack);
+      const errs = validator.errors.map((e) => e.stack);
       throw new BadRequestError(errs);
     }
 
@@ -100,14 +108,13 @@ router.get("/", async function (req, res, next) {
       outsideResults = await getMore(q.title);
     } else if (q.title && q.composer) {
       outsideResults = await getMore(q.title, q.composer);
-    };
-  };
-
+    }
+  }
 
   try {
     const validator = jsonschema.validate(q, librarySearchSchema);
     if (!validator.valid) {
-      const errs = validator.errors.map(e => e.stack);
+      const errs = validator.errors.map((e) => e.stack);
       throw new BadRequestError(errs);
     }
 
@@ -117,7 +124,7 @@ router.get("/", async function (req, res, next) {
         library.push(work);
       }
     }
-   
+
     return res.json({ library });
   } catch (err) {
     return next(err);
@@ -155,7 +162,7 @@ router.patch("/:id", ensureAdmin, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, libraryUpdateSchema);
     if (!validator.valid) {
-      const errs = validator.errors.map(e => e.stack);
+      const errs = validator.errors.map((e) => e.stack);
       throw new BadRequestError(errs);
     }
 
@@ -179,6 +186,5 @@ router.delete("/:id", ensureAdmin, async function (req, res, next) {
     return next(err);
   }
 });
-
 
 module.exports = router;

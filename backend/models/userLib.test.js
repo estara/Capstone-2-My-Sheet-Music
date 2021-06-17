@@ -10,7 +10,7 @@ const {
   commonAfterAll,
   testWorksOwned,
   testLibrary,
-  testUser
+  testUser,
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -29,7 +29,7 @@ describe("create", function () {
     physical: true,
     played: true,
     loanedout: false,
-    notes: "note1"
+    notes: "note1",
   };
 
   test("works", async function () {
@@ -47,54 +47,161 @@ describe("findAll", function () {
   test("works: no filter", async function () {
     let owned = await UserLibrary.findAll(testUser[0]);
     expect(owned).toEqual([
-      {id: testWorksOwned[0], owned: true, digital: true, physical: false, played: true, loanedout: false, notes: "note1", title: "w1", composer: "C1"},
-      {id: testWorksOwned[2], owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w3", composer: "C3"}
+      {
+        id: testWorksOwned[0],
+        owned: true,
+        digital: true,
+        physical: false,
+        played: true,
+        loanedout: false,
+        notes: "note1",
+        title: "w1",
+        composer: "C1",
+      },
+      {
+        id: testWorksOwned[2],
+        owned: true,
+        digital: true,
+        physical: true,
+        played: true,
+        loanedout: false,
+        notes: null,
+        title: "w3",
+        composer: "C3",
+      },
     ]);
   });
 
   test("works: by owned", async function () {
     let owned = await UserLibrary.findAll(testUser[0], { owned: true });
     expect(owned).toEqual([
-      {id: testWorksOwned[0], owned: true, digital: true, physical: false, played: true, loanedout: false, notes: "note1", title: "w1", composer: "C1"},
-      {id: testWorksOwned[2], owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w3", composer: "C3"}
+      {
+        id: testWorksOwned[0],
+        owned: true,
+        digital: true,
+        physical: false,
+        played: true,
+        loanedout: false,
+        notes: "note1",
+        title: "w1",
+        composer: "C1",
+      },
+      {
+        id: testWorksOwned[2],
+        owned: true,
+        digital: true,
+        physical: true,
+        played: true,
+        loanedout: false,
+        notes: null,
+        title: "w3",
+        composer: "C3",
+      },
     ]);
   });
 
   test("works: by digital", async function () {
     let owned = await UserLibrary.findAll(testUser[0], { digital: true });
     expect(owned).toEqual([
-      {id: testWorksOwned[0], owned: true, digital: true, physical: false, played: true, loanedout: false, notes: "note1", title: "w1", composer: "C1"},
-      {id: testWorksOwned[2], owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w3", composer: "C3"}
+      {
+        id: testWorksOwned[0],
+        owned: true,
+        digital: true,
+        physical: false,
+        played: true,
+        loanedout: false,
+        notes: "note1",
+        title: "w1",
+        composer: "C1",
+      },
+      {
+        id: testWorksOwned[2],
+        owned: true,
+        digital: true,
+        physical: true,
+        played: true,
+        loanedout: false,
+        notes: null,
+        title: "w3",
+        composer: "C3",
+      },
     ]);
   });
 
   test("works: by played & physical", async function () {
-    let owned = await UserLibrary.findAll(testUser[0], { played: true, physical: true });
+    let owned = await UserLibrary.findAll(testUser[0], {
+      played: true,
+      physical: true,
+    });
     expect(owned).toEqual([
-      {id: testWorksOwned[2], owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w3", composer: "C3"},
+      {
+        id: testWorksOwned[2],
+        owned: true,
+        digital: true,
+        physical: true,
+        played: true,
+        loanedout: false,
+        notes: null,
+        title: "w3",
+        composer: "C3",
+      },
     ]);
   });
 
   test("works: by title", async function () {
     let owned = await UserLibrary.findAll(testUser[0], { title: "w1" });
     expect(owned).toEqual([
-      {id: testWorksOwned[0], owned: true, digital: true, physical: false, played: true, loanedout: false, notes: "note1", title: "w1", composer: "C1"},
+      {
+        id: testWorksOwned[0],
+        owned: true,
+        digital: true,
+        physical: false,
+        played: true,
+        loanedout: false,
+        notes: "note1",
+        title: "w1",
+        composer: "C1",
+      },
     ]);
   });
 
   test("works: by composer", async function () {
-    let owned = await UserLibrary.findAll(testUser[0], { composer: "C3"});
+    let owned = await UserLibrary.findAll(testUser[0], { composer: "C3" });
     expect(owned).toEqual([
-      {id: testWorksOwned[2], owned: true, digital: true, physical: true, played: true, loanedout: false, notes: null, title: "w3", composer: "C3"}
-    ])
-  })
+      {
+        id: testWorksOwned[2],
+        owned: true,
+        digital: true,
+        physical: true,
+        played: true,
+        loanedout: false,
+        notes: null,
+        title: "w3",
+        composer: "C3",
+      },
+    ]);
+  });
 
   test("works: by title, loanedout & physical", async function () {
-    let owned = await UserLibrary.findAll(testUser[1], {title: "w2", loanedout: true, physical: true});
+    let owned = await UserLibrary.findAll(testUser[1], {
+      title: "w2",
+      loanedout: true,
+      physical: true,
+    });
     expect(owned).toEqual([
-      {id: testWorksOwned[1], owned: false, digital: false, physical: true, played: false, loanedout: true, notes: "note2", title: "w2", composer: "C2"}
-    ])
-  })
+      {
+        id: testWorksOwned[1],
+        owned: false,
+        digital: false,
+        physical: true,
+        played: false,
+        loanedout: true,
+        notes: "note2",
+        title: "w2",
+        composer: "C2",
+      },
+    ]);
+  });
 });
 
 /************************************** get */
@@ -102,8 +209,17 @@ describe("findAll", function () {
 describe("get", function () {
   test("works", async function () {
     let owned = await UserLibrary.get(testWorksOwned[0]);
-    expect(owned).toEqual({id: testWorksOwned[0], owned: true, digital: true, physical: false, played: true, loanedout: false, notes: "note1", title: "w1", composer: "C1"},
-    );
+    expect(owned).toEqual({
+      id: testWorksOwned[0],
+      owned: true,
+      digital: true,
+      physical: false,
+      played: true,
+      loanedout: false,
+      notes: "note1",
+      title: "w1",
+      composer: "C1",
+    });
   });
 
   test("not found if no such work", async function () {
@@ -119,7 +235,14 @@ describe("get", function () {
 /************************************** update */
 
 describe("update", function () {
-  let updateData = {owned: true, digital: true, physical: true, played: true, loanedout: true, notes: "newnote"};
+  let updateData = {
+    owned: true,
+    digital: true,
+    physical: true,
+    played: true,
+    loanedout: true,
+    notes: "newnote",
+  };
   test("works", async function () {
     let owned = await UserLibrary.update(testWorksOwned[3], updateData);
     expect(owned).toEqual({
@@ -156,8 +279,9 @@ describe("update", function () {
 describe("remove", function () {
   test("works", async function () {
     await UserLibrary.remove(testWorksOwned[0]);
-    const res = await db.query(
-        "SELECT id FROM user_library WHERE id=$1", [testWorksOwned[0]]);
+    const res = await db.query("SELECT id FROM user_library WHERE id=$1", [
+      testWorksOwned[0],
+    ]);
     expect(res.rows.length).toEqual(0);
   });
 

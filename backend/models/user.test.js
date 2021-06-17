@@ -14,7 +14,7 @@ const {
   commonAfterAll,
   testWorksOwned,
   testUser,
-  testLibrary
+  testLibrary,
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -71,7 +71,7 @@ describe("register", function () {
       username: "new",
       name: "Test",
       email: "test@test.com",
-      isAdmin: false
+      isAdmin: false,
     });
     const found = await db.query(`SELECT * FROM users WHERE username = 'new'`);
     expect(found.rows.length).toEqual(1);
@@ -87,12 +87,12 @@ describe("register", function () {
       password: "password",
       isAdmin: true,
     });
-    expect(user).toEqual({ 
+    expect(user).toEqual({
       id: expect.any(Number),
       username: "new",
       name: "Test",
       email: "test@test.com",
-      isAdmin: true
+      isAdmin: true,
     });
     const found = await db.query(`SELECT * FROM users WHERE username = 'new'`);
     expect(found.rows.length).toEqual(1);
@@ -156,7 +156,7 @@ describe("get", function () {
       name: "U1F",
       email: "u1@email.com",
       isAdmin: true,
-      works: expect.any(Array)
+      works: expect.any(Array),
     });
   });
 
@@ -231,8 +231,7 @@ describe("update", function () {
 describe("remove", function () {
   test("works", async function () {
     await User.remove("u1");
-    const res = await db.query(
-        `SELECT * FROM users WHERE username='u1'`);
+    const res = await db.query(`SELECT * FROM users WHERE username='u1'`);
     expect(res.rows.length).toEqual(0);
   });
 
@@ -253,31 +252,35 @@ describe("addToUserLib", function () {
     await User.addToUserLib(testUser[0], testLibrary[1]);
 
     const res = await db.query(
-        `SELECT * FROM user_library WHERE library_id=$1`, [testLibrary[1]]);
-    expect(res.rows).toEqual([ {
-           api_id: null,
-           digital: false,
-           id: expect.any(Number),
-           library_id: testLibrary[1],
-           loanedout: true,
-           notes: "note2",
-           owned: false,
-           physical: true,
-           played: false,
-           user_id: testUser[1],
-         },
-         {
-           api_id: null,
-           digital: null,
-           id: expect.any(Number),
-           library_id: testLibrary[1],
-           loanedout: null,
-           notes: null,
-           owned: null,
-           physical: null,
-           played: null,
-           user_id: testUser[0],
-          }]);
+      `SELECT * FROM user_library WHERE library_id=$1`,
+      [testLibrary[1]]
+    );
+    expect(res.rows).toEqual([
+      {
+        api_id: null,
+        digital: false,
+        id: expect.any(Number),
+        library_id: testLibrary[1],
+        loanedout: true,
+        notes: "note2",
+        owned: false,
+        physical: true,
+        played: false,
+        user_id: testUser[1],
+      },
+      {
+        api_id: null,
+        digital: null,
+        id: expect.any(Number),
+        library_id: testLibrary[1],
+        loanedout: null,
+        notes: null,
+        owned: null,
+        physical: null,
+        played: null,
+        user_id: testUser[0],
+      },
+    ]);
   });
 
   test("not found if no such work", async function () {

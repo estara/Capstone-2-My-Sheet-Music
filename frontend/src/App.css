@@ -1,48 +1,217 @@
+/* Universal settings */
 .App {
+  display: flex;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Routes {
+  height: 100vh;
+  width: 100vw;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.App form input{
-  width: auto;
-  
-}
-
-.App form button {
+button {
   background-color: darkred;
   color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+button:hover {
+  background-color: firebrick;
+}
+
+h1 {
+  font-size: clamp(1.6em, 5vw, 2.5em);
+}
+
+h2 {
+  font-size: clamp(1.5em, 4vw, 2.25em);
+}
+
+p {
+  font-size: clamp(100%, 1.2vw, 1.2rem);
+}
+
+img { 
+  max-width: 100%; height: 100%; 
+}
+
+form input {
+  border:0;
+  box-shadow:0 0 4px rgba(0,0,0,0.3);
+  border-radius: 2px;
+}
+
+form input:hover {
+  box-shadow:0 0 4px rgba(0,0,0,0.5);
+}
+
+form input:active {
+  box-shadow:0 0 4px rgba(0,0,0,0.8);
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + span {
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  width: 12px;
+  height: 12px;
+  margin: -1px .4vw 0 1vw;
+  vertical-align: middle;
+  background: white left top no-repeat;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked + span {
+  background: darkred -19px top no-repeat;
+}
+
+.container .row {
+  display: flex!important;
+  flex-direction: row;
+  width: 100vw;
+}
+
+/* Index page */
+.homeCard {
+  width: 25vw;
+  height: 100vh;
+}
+
+.homeCard .card{
+  width: 25vw;
+  height: 100vh;
+}
+
+.info {
+  width: 80vw;
+  text-align: center;
+}
+
+.info a {
+  background-color: darkred;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  padding: 1vh;
+  margin: 2px;
+  box-shadow: 2px 2px 0px rgba(100,100,100,0.8);
+}
+
+.info a:hover {
+  background-color: firebrick;
+}
+
+/* Library page */
+.library .card {
+  text-align: center;
+  width: 100%; 
+  height: auto;
+  margin: 0 1vw 1vh 0;
+  border-radius: 12px;
+  box-shadow: 0 0 5px 0 rgb(129, 129, 129), 0 0 5px 0 white; 
+  box-sizing: border-box;
+}
+
+.library .card-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.library .card button {
+  border-radius: 8px;
+  padding: .75vh 1vw;
+  margin-bottom: 1vh;
+  box-shadow: 2px 2px 0px rgba(100,100,100,0.8);
+}
+
+.library .searchForm form{
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.library .searchForm form input{
+  margin: 0 1vw 0 .5vw;
+}
+
+.library .searchForm button {
+  border-radius: 8px;
+  box-shadow: 2px 2px 0px rgba(100,100,100,0.8);
+}
+
+/* User page */
+.userLibrary .card {
+  width: 100%; 
+  height: auto;
+  margin: 0 1vw 1vh 0;
+  border-radius: 12px;
+  box-shadow: 0 0 5px 0 rgb(129, 129, 129), 0 0 5px 0 white; 
+  box-sizing: border-box;
+}
+
+.userLibrary .card-title {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.userLibrary .card-body form .form-group {
+  display: flex;
+  justify-content: left;
+}
+
+.userLibrary .card button {
+  border-radius: 8px;
+  padding: .75vh 1vw;
+  margin: .5vh 0 1vh 0;
+  box-shadow: 2px 2px 0px rgba(100,100,100,0.8);
+}
+
+.userLibrary .userInfo form{
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.userLibrary .userInfo form input{
+  margin: 0 1vw 0 .5vw;
+}
+
+.userLibrary .userInfo button {
+  border-radius: 8px;
+  box-shadow: 2px 2px 0px rgba(100,100,100,0.8);
+}
+
+.delete {
+  margin: 2vh 0;
+}
+
+/* Mobile responsive settings */
+@media screen and (max-width: 768px) {
+  .homeCard {
+      display: none;
   }
-  to {
-    transform: rotate(360deg);
+
+  .info {
+    width: 100vw;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 1060px) {
+  .library .searchForm form {
+    flex-direction: column;
+    align-items: center!important;
+    justify-content: center!important;
+  }
+
+  .userLibrary .userInfo form {
+    flex-direction: column;
+    align-items: center!important;
+    justify-content: center;
   }
 }

@@ -2,9 +2,9 @@
 
 const { default: axios } = require("axios");
 const db = require("../db");
-const { NotFoundError} = require("../expressError");
+const { NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
-const url = "https://api.openopus.org"
+const url = "https://api.openopus.org";
 
 /** Related functions for user library. */
 
@@ -18,7 +18,7 @@ class UserLibrary {
 
   static async create(data) {
     const result = await db.query(
-          `INSERT INTO user_library (owned,
+      `INSERT INTO user_library (owned,
                              digital,
                              physical,
                              played,
@@ -29,17 +29,18 @@ class UserLibrary {
                              library_id)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
            RETURNING id, owned, digital, physical, played, loanedout, notes`,
-        [
-          data.owned,
-          data.digital,
-          data.physical,
-          data.played,
-          data.loanedout,
-          data.notes,
-          data.api_id,
-          data.user_id,
-          data.library_id
-        ]);
+      [
+        data.owned,
+        data.digital,
+        data.physical,
+        data.played,
+        data.loanedout,
+        data.notes,
+        data.api_id,
+        data.user_id,
+        data.library_id,
+      ]
+    );
     let item = result.rows[0];
 
     return item;
@@ -59,7 +60,10 @@ class UserLibrary {
    * Returns [{ id, owned, digital, physical, played, loanedout, notes, title, composer }, ...]
    * */
 
-  static async findAll(user_id, { owned, digital, physical, played, loanedout, title, composer } = {}) {
+  static async findAll(
+    user_id,
+    { owned, digital, physical, played, loanedout, title, composer } = {}
+  ) {
     let query = `SELECT ul.id,
                         ul.api_id,
                         ul.digital,
@@ -110,13 +114,11 @@ class UserLibrary {
     }
 
     queryValues.push(`${user_id}`);
-      whereExpressions.push(`ul.user_id = $${queryValues.length}`);
+    whereExpressions.push(`ul.user_id = $${queryValues.length}`);
 
     if (whereExpressions.length > 0) {
       query += " WHERE " + whereExpressions.join(" AND ");
     }
-    
-  
 
     // Finalize query and return results
 
@@ -135,7 +137,7 @@ class UserLibrary {
 
   static async get(id) {
     const itemRes = await db.query(
-          `SELECT id,
+      `SELECT id,
                   library_id,
                   owned,
                   digital,
@@ -144,17 +146,21 @@ class UserLibrary {
                   loanedout,
                   notes
            FROM user_library
-           WHERE id = $1`, [id]);
+           WHERE id = $1`,
+      [id]
+    );
 
     const item = itemRes.rows[0];
 
     if (!item) throw new NotFoundError(`No item: ${id}`);
 
     const libraryRes = await db.query(
-          `SELECT title,
+      `SELECT title,
                   composer
            FROM library
-           WHERE id = $1`, [item.library_id]);
+           WHERE id = $1`,
+      [item.library_id]
+    );
 
     delete item.library_id;
     item.title = libraryRes.rows[0].title;
@@ -176,9 +182,7 @@ class UserLibrary {
    */
 
   static async update(id, data) {
-    const { setCols, values } = sqlForPartialUpdate(
-        data,
-        {});
+    const { setCols, values } = sqlForPartialUpdate(data, {});
     const idVarIdx = "$" + (values.length + 1);
 
     const querySql = `UPDATE user_library 
@@ -198,7 +202,9 @@ class UserLibrary {
 
     if (!item) throw new NotFoundError(`No item: ${id}`);
     if (item.api_id !== undefined && item.api_id !== null) {
-      const outsideRes = await axios.get(`${url}/work/detail/${item.api_id}.json`);
+      const outsideRes = await axios.get(
+        `${url}/work/detail/${item.api_id}.json`
+      );
       item.title = outsideRes.data.work.title;
       item.composer = outsideRes.data.work.title;
       delete item.api_id;
@@ -208,8 +214,10 @@ class UserLibrary {
         `SELECT title,
                 composer
          FROM library
-         WHERE id = $1`, [item.library_id]);
-  
+         WHERE id = $1`,
+        [item.library_id]
+      );
+
       delete item.library_id;
       item.title = libraryRes.rows[0].title;
       item.composer = libraryRes.rows[0].composer;
@@ -224,10 +232,12 @@ class UserLibrary {
 
   static async remove(id) {
     const result = await db.query(
-          `DELETE
+      `DELETE
            FROM user_library
            WHERE id = $1
-           RETURNING id`, [id]);
+           RETURNING id`,
+      [id]
+    );
     const item = result.rows[0];
 
     if (!item) throw new NotFoundError(`No item: ${id}`);

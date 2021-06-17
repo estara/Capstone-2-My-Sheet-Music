@@ -11,9 +11,9 @@ const PORT = +process.env.PORT || 3001;
 
 // Use dev database, testing database, or via env var, production database
 function getDatabaseUri() {
-  return (process.env.NODE_ENV === "test")
-      ? "mysheetmusic_test"
-      : process.env.DATABASE_URL || "mysheetmusic";
+  return process.env.NODE_ENV === "test"
+    ? "mysheetmusic_test"
+    : process.env.DATABASE_URL || "mysheetmusic";
 }
 
 // work factor for bcrypt

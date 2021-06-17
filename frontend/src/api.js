@@ -17,9 +17,7 @@ class MyMusicApi {
     console.debug("API Call:", endpoint, data, method);
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${MyMusicApi.token}` };
-    const params = (method === "get")
-        ? data
-        : {};
+    const params = method === "get" ? data : {};
 
     try {
       return (await axios({ url, method, data, params, headers })).data;
@@ -54,12 +52,12 @@ class MyMusicApi {
   static async deleteUser(id) {
     await this.request(`users/${id}`, {}, "DELETE");
   }
-  
+
   // login user
   static async login(formData) {
     let res = await this.request(`auth/token`, formData, "POST");
     this.token = res.result.token;
-    return res.result
+    return res.result;
   }
 
   // logout user
@@ -76,11 +74,12 @@ class MyMusicApi {
 
   // get music catalog
   static async getLibrary(formData = false) {
-    let res
+    let res;
     if (formData) {
       res = await this.request(`library`, formData);
     } else {
-    res = await this.request(`library`);}
+      res = await this.request(`library`);
+    }
     return res;
   }
 
@@ -100,7 +99,7 @@ class MyMusicApi {
   static async addItem(username, id) {
     await this.request(`users/${username}/userLib/${id}`, {}, "POST");
   }
-  
+
   // get user's library
   static async getUserLib(id) {
     const res = await this.request(`userLib/user/${id}`);
@@ -115,14 +114,18 @@ class MyMusicApi {
 
   // update info on single entry in user's library
   static async updateUserWork(id, workId, formData) {
-    const res = await this.request(`userLib/${id}/${workId}`, formData, "PATCH");
+    const res = await this.request(
+      `userLib/${id}/${workId}`,
+      formData,
+      "PATCH"
+    );
     return res;
   }
 
   // delete entry from user's library
   static async deleteUserWork(id, workId) {
     const res = await this.request(`userLib/${id}/${workId}`, {}, "DELETE");
-    return res
+    return res;
   }
 }
 

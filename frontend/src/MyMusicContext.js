@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // create contexts
 const CurrentUserContext = React.createContext();
@@ -8,4 +8,11 @@ const LibraryDispatchContext = React.createContext();
 const UserLibContext = React.createContext();
 const UserLibDispatchContext = React.createContext();
 
-export { CurrentUserContext, CurrentUserDispatchContext, LibraryContext, LibraryDispatchContext, UserLibContext, UserLibDispatchContext };
+export {
+  CurrentUserContext,
+  CurrentUserDispatchContext,
+  LibraryContext,
+  LibraryDispatchContext,
+  UserLibContext,
+  UserLibDispatchContext,
+};

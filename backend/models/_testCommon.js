@@ -9,7 +9,7 @@ let testUser = [];
 
 async function commonBeforeAll() {
   // make sure db is clear
-  await db.query("DELETE FROM user_library")
+  await db.query("DELETE FROM user_library");
   await db.query("DELETE FROM library");
   await db.query("DELETE FROM users");
 
@@ -21,10 +21,11 @@ async function commonBeforeAll() {
            ('w3', 'C3', '1930-03-03', 'Opera', 'Late Romantic', true),
            ('w4', 'C3', '1930-03-03', 'Keyboard', '20th Century', true)
            RETURNING id`);
-           testLibrary.splice(0, 0, ...resultsLibrary.rows.map(r => r.id));
-  
+  testLibrary.splice(0, 0, ...resultsLibrary.rows.map((r) => r.id));
+
   // add users
-  const userResults = await db.query(`
+  const userResults = await db.query(
+    `
         INSERT INTO users (username,
                           password,
                           name,
@@ -33,12 +34,12 @@ async function commonBeforeAll() {
         VALUES ('u1', $1, 'U1F', 'u1@email.com', true),
                ('u2', $2, 'U2F', 'u2@email.com', false)
         RETURNING id`,
-      [
-        await bcrypt.hash("password1", BCRYPT_WORK_FACTOR),
-        await bcrypt.hash("password2", BCRYPT_WORK_FACTOR)
-      ]);
-      testUser.splice(0, 0, ...userResults.rows.map(r => r.id));
-      
+    [
+      await bcrypt.hash("password1", BCRYPT_WORK_FACTOR),
+      await bcrypt.hash("password2", BCRYPT_WORK_FACTOR),
+    ]
+  );
+  testUser.splice(0, 0, ...userResults.rows.map((r) => r.id));
 
   // add works to user's library
   const resultsOwned = await db.query(`
@@ -56,8 +57,7 @@ async function commonBeforeAll() {
            (true, true, true, true, false, null, null, ${testUser[0]}, ${testLibrary[2]}),
            (false, false, false, true, false, 'note4', null, ${testUser[1]}, ${testLibrary[3]})
     RETURNING id`);
-  testWorksOwned.splice(0, 0, ...resultsOwned.rows.map(r => r.id));
-
+  testWorksOwned.splice(0, 0, ...resultsOwned.rows.map((r) => r.id));
 }
 
 async function commonBeforeEach() {
@@ -72,7 +72,6 @@ async function commonAfterAll() {
   await db.end();
 }
 
-
 module.exports = {
   commonBeforeAll,
   commonBeforeEach,
@@ -80,5 +79,5 @@ module.exports = {
   commonAfterAll,
   testWorksOwned,
   testLibrary,
-  testUser
+  testUser,
 };

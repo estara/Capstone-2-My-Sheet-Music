@@ -20,28 +20,22 @@ class Library {
 
   static async create({ title, composer, birth, genre, epoch, popular }) {
     const duplicateCheck = await db.query(
-          `SELECT title,
+      `SELECT title,
                   composer
            FROM library
            WHERE title = $1 AND composer = $2`,
-        [title, composer]);
+      [title, composer]
+    );
 
     if (duplicateCheck.rows[0])
       throw new BadRequestError(`Duplicate work: ${title}`);
 
     const result = await db.query(
-          `INSERT INTO library
+      `INSERT INTO library
            (title, composer, birth, genre, epoch, popular)
            VALUES ($1, $2, $3, $4, $5, $6)
            RETURNING id, title, composer, birth, genre, epoch, popular`,
-        [
-          title,
-          composer,
-          birth,
-          genre,
-          epoch,
-          popular,
-        ],
+      [title, composer, birth, genre, epoch, popular]
     );
     const work = result.rows[0];
 
@@ -86,7 +80,7 @@ class Library {
       queryValues.push(`%${title}%`);
       whereExpressions.push(`title ILIKE $${queryValues.length}`);
     }
-    
+
     if (epoch) {
       queryValues.push(`%${epoch}%`);
       whereExpressions.push(`epoch ILIKE $${queryValues.length}`);
@@ -122,25 +116,35 @@ class Library {
 
   static async get(id) {
     const workRes = await db.query(
-          `SELECT title,
+      `SELECT title,
                   composer,
                   genre,
                   epoch,
                   birth
            FROM library
            WHERE id = $1`,
-        [id]);
+      [id]
+    );
 
     let work = workRes.rows[0];
-    
+
     if (!work) {
-      try{
-      const apiCheck = await axios.get(`${url}/work/detail/${id}.json`)
-      if (!apiCheck) {throw new NotFoundError(`No work: ${id}`);}
-      work = {title: apiCheck.work.title, composer: apiCheck.composer.complete_name, epoch: apiCheck.composer.epoch, birth: apiCheck.composer.birth}
+      try {
+        const apiCheck = await axios.get(`${url}/work/detail/${id}.json`);
+        if (!apiCheck) {
+          throw new NotFoundError(`No work: ${id}`);
+        }
+        work = {
+          title: apiCheck.work.title,
+          composer: apiCheck.composer.complete_name,
+          epoch: apiCheck.composer.epoch,
+          birth: apiCheck.composer.birth,
+        };
       } catch (err) {}
     }
-    if (!work) {throw new NotFoundError(`No work: ${id}`)}
+    if (!work) {
+      throw new NotFoundError(`No work: ${id}`);
+    }
     return work;
   }
 
@@ -171,7 +175,7 @@ class Library {
                                 popular`;
     const result = await db.query(querySql, [...values, id]);
     const work = result.rows[0];
-    
+
     if (!work) throw new NotFoundError(`No local work: ${id}`);
 
     return work;
@@ -184,17 +188,17 @@ class Library {
 
   static async remove(id) {
     const result = await db.query(
-          `DELETE
+      `DELETE
            FROM library
            WHERE id = $1
            RETURNING id`,
-        [id]);
+      [id]
+    );
     const work = result.rows[0];
 
     if (!work) throw new NotFoundError(`No local work: ${id}`);
-    return work
+    return work;
   }
 }
-
 
 module.exports = Library;
