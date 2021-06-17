@@ -12,6 +12,7 @@
 button {
   background-color: darkred;
   color: white;
+  border-radius: 4px;
 }
 
 button:hover {
